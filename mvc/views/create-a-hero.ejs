@@ -64,5 +64,24 @@
         <input type="submit" name="submit" value="Create Hero">
         
     </form>
+
+    <script type="text/javascript">
+        let sliders=document.querySelectorAll('input[type=range]')//returns arrayLIST
+
+        Array.from(sliders).forEach((elem)=>{
+            elem.addEventListener('input,()=>{
+                let value=elem.value;
+                let parent=elem.parentElement;
+                for(let i=0;i<parent.childNodes.length;i++){
+                    if(parent.childNodes[i].className='amount'){
+                        parent.childNodes[i].innerHTML=value;
+                        break;  
+                    }
+                }
+            })
+            
+        })
+
+    </script>
     
 <%- include('partials/footer.ejs')%>
