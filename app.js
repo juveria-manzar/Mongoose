@@ -4,10 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-const indexRouter = require('./mvc/routes/index');
-
 require('./mvc/models/db')
-
+const indexRouter = require('./mvc/routes/index');
 var app = express();
 
 // view engine setup
