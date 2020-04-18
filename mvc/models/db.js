@@ -41,4 +41,4 @@ process.on('SIGTERM', () => {
     });
 });
 
-require('./heros.js')
+require('./heroes.js')
