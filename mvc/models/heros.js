@@ -17,4 +17,11 @@ const heroSchema = new mongoose.Schema({
     stats: { type: statsSchema, required: true }
 })
 
+const squadSchema = new mongoose.Schema({
+    name: { type: String, required: true, unique: true },
+})
+
+
+
+
 mongoose.model('Hero', heroSchema)
