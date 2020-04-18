@@ -1,3 +1,6 @@
+const mongoose = require('mongoose')
+const Hero = mongoose.model('Hero')
+
 getIndex = function(req, res, next) {
     res.render('index', { title: 'Mongoose' });
 }
@@ -24,6 +27,10 @@ createNewHero = function({ body }, res) {
         }
     }
     body.origin && (hero.origin = body.origin)
+
+    Hero.create(hero, (err, newHero) => {
+        if (err) { return res.send({ error: err }); }
+    })
 }
 
 module.exports = {
