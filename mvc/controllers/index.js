@@ -55,7 +55,7 @@ updateHero = function({ params, body }, res) {
     Hero.findById(params.heroid, (err, hero) => {
         if (err) { return res.send({ error: err }); }
         hero.name = body.name
-        hero.description = body.desc
+        hero.desc = body.desc
         hero.origin = body.origin
         hero.stats.strength = body.strength
         hero.stats.perception = body.perception
