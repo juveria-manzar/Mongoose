@@ -23,7 +23,7 @@ createNewHero = function({ body }, res) {
         desc: body.desc,
         stats: {
             strength: body.strength,
-            percepttion: body.percepttion,
+            perception: body.perception,
             endurance: body.endurance,
             charisma: body.charisma,
             intelligence: body.intelligence,
@@ -51,11 +51,32 @@ getUpdateForm = function({ params }, res) {
     })
 }
 
+updateHero = function({ params, body }, res) {
+    Hero.findById(params.heroid, (err, hero) => {
+        if (err) { return res.send({ error: err }); }
+        hero.name = body.name
+        hero.description = body.desc
+        hero.origin = body.origin
+        hero.stats.strength = body.strength
+        hero.stats.percepttion = body.percepttion
+        hero.stats.endurance = body.endurance
+        hero.stats.charisma = body.charisma
+        hero.stats.intelligence = body.intelligence
+        hero.statsluck = body.luck
+
+        hero.save((err, updatedHero) => {
+            if (err) { return res.send({ error: err }); }
+            res.redirect('/heroes')
+        })
+    })
+}
+
 module.exports = {
     getIndex,
     getHeroesIndex,
     getHeroesForm,
     createNewHero,
     deleteHero,
-    getUpdateForm
+    getUpdateForm,
+    updateHero
 };
