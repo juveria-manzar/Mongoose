@@ -44,10 +44,18 @@ deleteHero = function({ params }, res) {
         res.redirect('/heroes')
     })
 }
+getUpdateForm = function({ params }, res) {
+    Hero.findById(params.heroid, (err, hero) => {
+        if (err) { return res.send({ error: err }); }
+        res.render('update-hero', { title: "Update Hero", hero: hero })
+    })
+}
+
 module.exports = {
     getIndex,
     getHeroesIndex,
     getHeroesForm,
     createNewHero,
-    deleteHero
+    deleteHero,
+    getUpdateForm
 };
