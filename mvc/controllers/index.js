@@ -58,11 +58,12 @@ updateHero = function({ params, body }, res) {
         hero.description = body.desc
         hero.origin = body.origin
         hero.stats.strength = body.strength
-        hero.stats.percepttion = body.percepttion
+        hero.stats.perception = body.perception
         hero.stats.endurance = body.endurance
         hero.stats.charisma = body.charisma
         hero.stats.intelligence = body.intelligence
-        hero.statsluck = body.luck
+        hero.stats.agility = body.agility
+        hero.stats.luck = body.luck
 
         hero.save((err, updatedHero) => {
             if (err) { return res.send({ error: err }); }

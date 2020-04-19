@@ -3,11 +3,10 @@
 <%} else{%>
     <form action="/create-hero" method="post" autocomplete="off">
 <%}%>
-
 <%
     if(locals.hero){
         var n=hero.name;
-        var d=hero.description;
+        var d=hero.desc;
         var o=hero.origin;
         var str=hero.stats.strength;
         var per=hero.stats.perception;
@@ -24,7 +23,7 @@
     </div>
     <div class="input-group">
         <label class="d-block">Description</label>
-        <textarea name="desc" required rows="7" cols="110"  <% if(d) {%> <%= d %> <%}%>></textarea>
+        <textarea name="desc" required rows="7" cols="110"  <% if(d) {%><%= d %><%}%>></textarea>
     </div>
         
     <div class="input-group">
