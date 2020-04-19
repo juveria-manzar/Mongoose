@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 let uri = 'mongodb://localhost/the_supers_prod'
 
-mongoose.connect(uri, { useNewUrlParser: true })
+mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true })
 
 mongoose.connection.on('connected', () => {
     console.log('====================')

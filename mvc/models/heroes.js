@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+mongoose.set('useCreateIndex', true);
 
 const statsSchema = new mongoose.Schema({
     strength: { type: Number, default: 30, min: 0, max: 30 },

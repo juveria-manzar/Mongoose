@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+
 const Hero = mongoose.model('Hero')
 
 getIndex = function(req, res, next) {
@@ -6,7 +7,10 @@ getIndex = function(req, res, next) {
 }
 
 getHeroesIndex = function(req, res) {
-    res.render('heroes', { title: 'Hall of Heroes' })
+    Hero.find((err, heroes) => {
+        if (err) { return res.send({ error: err }); }
+        res.render('heroes', { title: 'Hall of Heroes', heroes: heroes })
+    })
 }
 
 getHeroesForm = function(req, res) {
@@ -30,11 +34,13 @@ createNewHero = function({ body }, res) {
 
     Hero.create(hero, (err, newHero) => {
         if (err) { return res.send({ error: err }); }
+        res.redirect('/heroes')
     })
 }
 
 module.exports = {
     getIndex,
     getHeroesIndex,
-    getHeroesForm
+    getHeroesForm,
+    createNewHero
 };
