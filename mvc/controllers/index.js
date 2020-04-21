@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Hero = mongoose.model("Hero");
+const Squad = mongoose.model("Squad");
 
 let data = require("../../Default_Heroes");
 let heroData = data.heroes;
@@ -99,6 +100,30 @@ reset = function(req, res) {
         });
     });
 };
+
+getSquadsIndex = function(req, res) {
+    res.render("squads", { title: "Super Squads" });
+};
+
+getSquadForm = function(req, res) {
+    res.render("create-squad", { title: "Create a Squad" });
+};
+
+createSquad = function({ body }, res) {
+    let squad = {
+        name: body.name,
+    };
+    body.hq && (squad.hq = body.hq);
+    squad.hq || (squad.hq = "Unkown");
+
+    Squad.create(squad, (err, squad) => {
+        if (err) {
+            return res.send({ error: err });
+        }
+        console.log(squad);
+        res.redirect("/squads");
+    });
+};
 module.exports = {
     getIndex,
     getHeroesIndex,
@@ -108,4 +133,7 @@ module.exports = {
     getUpdateForm,
     updateHero,
     reset,
+    getSquadsIndex,
+    getSquadForm,
+    createSquad,
 };

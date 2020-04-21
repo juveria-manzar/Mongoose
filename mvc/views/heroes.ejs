@@ -1,6 +1,9 @@
 <%- include('partials/header.ejs')%>
     <h1>Hall of Heroes</h1>
-    <a href="/create-hero">Create a New Hero</a>
+
+    <a href="/">Go Back</a><br>
+    <a href="/create-hero">Create a New Hero</a><br>
+    <a href="/squads">View Super Squads</a><br>
     
     <div class="heroes-list">
         <% for(let i = 0; i < heroes.length; i++) { %>
