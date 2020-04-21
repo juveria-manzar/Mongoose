@@ -5,14 +5,32 @@ const Squad = mongoose.model("Squad");
 let data = require("../../Default_Heroes");
 let heroData = data.heroes;
 
+function getOverall(hero) {
+    let {
+        strength: str,
+        perception: per,
+        endurance: end,
+        charisma: cha,
+        intelligence: int,
+        agility: agi,
+        luck: luc,
+    } = hero.stats;
+
+    let arr = [str, per, end, cha, int, agi, luc];
+    return arr.reduce((acc, val) => acc + val);
+}
+
 getIndex = function(req, res, next) {
     res.render("index", { title: "Mongoose" });
 };
 
 getHeroesIndex = function(req, res) {
-    Hero.find((err, heroes) => {
+    Hero.find({}, null, { lean: true }, (err, heroes) => {
         if (err) {
             return res.send({ error: err });
+        }
+        for (hero of heroes) {
+            hero.overall = getOverall(hero);
         }
         res.render("heroes", { title: "Hall of Heroes", heroes: heroes });
     });
@@ -130,16 +148,16 @@ getSquadsIndex = function(req, res) {
             }
             for (let i = 0; i < squads.length; i++) {
                 squads[i].heroes = [];
-                console.log(heroes[0].squad)
+                console.log(heroes[0].squad);
                 for (let j = 0; j < heroes.length; j++) {
                     if (heroes[j].squad === squads[i].name) {
-                        console.log('helloooooo')
+                        console.log("helloooooo");
                         squads[i].heroes.push(heroes[j]);
                         heroes.splice(j, 1);
                         j--;
                     }
                 }
-                console.log(squads[i])
+                console.log(squads[i]);
             }
             res.render("squads", { title: "Super Squads", squads: squads });
         });
