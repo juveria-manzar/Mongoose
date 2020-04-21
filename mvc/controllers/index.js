@@ -119,11 +119,30 @@ reset = function(req, res) {
 };
 
 getSquadsIndex = function(req, res) {
-    Squad.find((err, squads) => {
+    Squad.find({}, null, { lean: true }, (err, squads) => {
         if (err) {
             return res.send({ error: err });
         }
-        res.render("squads", { title: "Super Squads", squads: squads });
+
+        Hero.find((err, heroes) => {
+            if (err) {
+                return res.send({ error: err });
+            }
+            for (let i = 0; i < squads.length; i++) {
+                squads[i].heroes = [];
+                console.log(heroes[0].squad)
+                for (let j = 0; j < heroes.length; j++) {
+                    if (heroes[j].squad === squads[i].name) {
+                        console.log('helloooooo')
+                        squads[i].heroes.push(heroes[j]);
+                        heroes.splice(j, 1);
+                        j--;
+                    }
+                }
+                console.log(squads[i])
+            }
+            res.render("squads", { title: "Super Squads", squads: squads });
+        });
     });
 };
 
