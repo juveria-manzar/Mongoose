@@ -24,7 +24,7 @@ getHeroesForm = function(req, res) {
             return res.send({ error: err });
         }
         res.render("create-a-hero", { title: "Hall of Heroes", squads: squads });
-    })
+    });
 };
 
 createNewHero = function({ body }, res) {
@@ -41,6 +41,7 @@ createNewHero = function({ body }, res) {
         },
     };
     body.origin && (hero.origin = body.origin);
+    squad.origin && (squad.origin = squad.origin);
 
     Hero.create(hero, (err, newHero) => {
         if (err) {
@@ -67,8 +68,12 @@ getUpdateForm = function({ params }, res) {
             if (err) {
                 return res.send({ error: err });
             }
-            res.render("update-hero", { title: "Update Hero", hero: hero, squads: squads });
-        })
+            res.render("update-hero", {
+                title: "Update Hero",
+                hero: hero,
+                squads: squads,
+            });
+        });
     });
 };
 
@@ -88,6 +93,8 @@ updateHero = function({ params, body }, res) {
         hero.stats.agility = body.agility;
         hero.stats.luck = body.luck;
 
+        hero.squad = undefined;
+        body.squad && (hero.squad = body.squad);
         hero.save((err, updatedHero) => {
             if (err) {
                 return res.send({ error: err });
