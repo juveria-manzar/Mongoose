@@ -17,9 +17,22 @@
         var luc=hero.stats.luck;
     }
 %>
-    <div class="input-group">
-        <label>Name</label>
-        <input type="text" name="name" required <% if(n) {%> value= '<%= n %>'<%}%>> 
+    <div class="d-flex jc-sb" styel="width:600px; align-items:center;">
+        <div class="input-group">
+            <label>Name</label>
+            <input type="text" name="name" required <% if(n) {%> value= '<%= n %>'<%}%>> 
+        </div>
+        <% if(squads.length > 0){%>
+            <div class="">
+                <label >Squad</label>
+                <select name="squad">
+                    <option value="">None</option>
+                    <%for(let i=0; i<squads.length;i++){%>
+                        <option value="<%=squads[i].id %>"><%=squads[i].name %></option>
+                    <%}%>
+                </select>
+            </div>
+        <%}%>
     </div>
     <div class="input-group">
         <label class="d-block">Description</label>
