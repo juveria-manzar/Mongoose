@@ -2,6 +2,28 @@
     <h1>Super Squads</h1>
     <a href="/heroes">Go Back</a><br>
     <a href="/create-squad">Create New Super Squad</a><br>
+
+    <div class="squads">
+        <%for(let i=0;i<squads.length;i++){%>
+            <div class="squad">
+                <h2><small>Squad Name: </small><%= squads[i].name %></h2>
+                <h3>Headquarter Location: <%= squads[i].hq %></h3>
+                <details>
+                <summary>Active Members: 11</summary>
+                <ul>
+                    <li>Hero 1</li>
+                    <li>Hero 1</li>
+                    <li>Hero 1</li>
+                    <li>Hero 1</li>
+                </ul>
+                </details>
+                <h2>Squad Overall: 5402</h2>
+                <form action="/delete-squad/<%= squads[i].id%>" method="post">
+                    <input type="submit" class="link" value="Disband Squad">
+                </form>
+            </div>
+        <%}%>
+    </div>
     
     
 <%- include('partials/footer.ejs')%>

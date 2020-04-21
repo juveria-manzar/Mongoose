@@ -102,7 +102,12 @@ reset = function(req, res) {
 };
 
 getSquadsIndex = function(req, res) {
-    res.render("squads", { title: "Super Squads" });
+    Squad.find((err, squads) => {
+        if (err) {
+            return res.send({ error: err });
+        }
+        res.render("squads", { title: "Super Squads", squads: squads });
+    });
 };
 
 getSquadForm = function(req, res) {
@@ -124,6 +129,7 @@ createSquad = function({ body }, res) {
         res.redirect("/squads");
     });
 };
+
 module.exports = {
     getIndex,
     getHeroesIndex,
