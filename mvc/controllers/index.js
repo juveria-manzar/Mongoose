@@ -91,7 +91,7 @@ reset = function(req, res) {
         if (err) {
             return res.send({ error: err });
         }
-        Hero.insertMany(heroData, () => {
+        Hero.insertMany(heroData, (err, info) => {
             if (err) {
                 return res.send({ error: err });
             }
