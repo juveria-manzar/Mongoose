@@ -130,6 +130,15 @@ createSquad = function({ body }, res) {
     });
 };
 
+deleteSquad = function({ params }, res) {
+    Squad.findByIdAndRemove(params.squadid, (err, squad) => {
+        if (err) {
+            return res.send({ error: err });
+        }
+        res.redirect("/squads");
+    });
+};
+
 module.exports = {
     getIndex,
     getHeroesIndex,
@@ -142,4 +151,5 @@ module.exports = {
     getSquadsIndex,
     getSquadForm,
     createSquad,
+    deleteSquad,
 };
