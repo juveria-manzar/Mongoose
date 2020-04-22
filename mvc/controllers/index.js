@@ -202,7 +202,27 @@ deleteSquad = function({ params }, res) {
         if (err) {
             return res.send({ error: err });
         }
-        res.redirect("/squads");
+        Hero.find({ squad: { $exists: true } }, "squad", {}, (err, heroes) => {
+            if (err) {
+                return res.send({ error: err });
+            }
+            let promises = [];
+            for (hero of heroes) {
+                if (hero.squad === squad.name) {
+                    hero.squad = undefined;
+                    let promise = new Promise(() => {
+                        hero.save((err) => {
+                            if (err) {
+                                return res.send({ error: err });
+                            }
+                        });
+                    });
+                }
+            }
+            Promise.all(promises).then(() => {
+                res.redirect("/squads");
+            });
+        });
     });
 };
 
