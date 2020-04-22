@@ -210,16 +210,21 @@ deleteSquad = function({ params }, res) {
             for (hero of heroes) {
                 if (hero.squad === squad.name) {
                     hero.squad = undefined;
-                    let promise = new Promise(() => {
+                    let promise = new Promise((resolve, reject) => {
                         hero.save((err) => {
                             if (err) {
+                                reject('Error')
                                 return res.send({ error: err });
                             }
+                            console.log('Sucesfully deleted')
+                            resolve("Success");
                         });
                     });
+                    promises.push(promise);
                 }
             }
             Promise.all(promises).then(() => {
+                console.log('Run this last')
                 res.redirect("/squads");
             });
         });
