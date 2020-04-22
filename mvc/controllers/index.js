@@ -86,6 +86,13 @@ getUpdateForm = function({ params }, res) {
             if (err) {
                 return res.send({ error: err });
             }
+            if (squads.length < 0) {
+                res.render("update-hero", {
+                    title: "Update Hero",
+                    hero: hero,
+                });
+            }
+            console.log(squads.length);
             res.render("update-hero", {
                 title: "Update Hero",
                 hero: hero,
@@ -150,7 +157,6 @@ getSquadsIndex = function(req, res) {
                 }
                 for (let i = 0; i < squads.length; i++) {
                     squads[i].heroes = [];
-                    console.log(heroes[0].squad);
                     for (let j = 0; j < heroes.length; j++) {
                         if (heroes[j].squad === squads[i].name) {
                             heroes[j].overall = getOverall(heroes[j]);
@@ -158,9 +164,14 @@ getSquadsIndex = function(req, res) {
                             heroes.splice(j, 1);
                             j--;
                         }
+                        let overall = squads[i].heroes.reduce(
+                            (acc, val) => acc + val.overall,
+                            0
+                        );
+                        squads[i].overall = overall;
                     }
-                    console.log(squads[i]);
                 }
+
                 res.render("squads", { title: "Super Squads", squads: squads });
             }
         );
@@ -182,13 +193,12 @@ createSquad = function({ body }, res) {
         if (err) {
             return res.send({ error: err });
         }
-        console.log(squad);
         res.redirect("/squads");
     });
 };
 
 deleteSquad = function({ params }, res) {
-    Squad.findByIdAndRemove(params.squadid, (err, squad) => {
+    Squad.findByIdAndDelete(params.squadid, (err, squad) => {
         if (err) {
             return res.send({ error: err });
         }

@@ -19,12 +19,12 @@
                     <ul>
                         <%for(let j=0;j<squads[i].heroes.length;j++){%>
                             <li>
-                                <%= squads[i].heroes[j].name%>
+                                <%= squads[i].heroes[j].name%>(<%= squads[i].heroes[j].overall%>)
                             </li>
                             <%}%>
                     </ul>
                 </details>
-                <h2>Squad Overall: 5402</h2>
+                <h2>Squad Overall: <%= squads[i].overall%></h2>
                 <form action="/delete-squad/<%= squads[i]._id%>" method="post">
                     <input type="submit" class="link" value="Disband Squad">
                 </form>
