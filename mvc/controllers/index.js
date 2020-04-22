@@ -4,6 +4,7 @@ const Squad = mongoose.model("Squad");
 
 let data = require("../../Default_Heroes");
 let heroData = data.heroes;
+let squadData = data.squads;
 
 function getOverall(hero) {
     let {
@@ -59,7 +60,7 @@ createNewHero = function({ body }, res) {
         },
     };
     body.origin && (hero.origin = body.origin);
-    squad.origin && (squad.origin = squad.origin);
+    body.squad && (hero.squad = body.squad);
 
     Hero.create(hero, (err, newHero) => {
         if (err) {
@@ -130,14 +131,46 @@ updateHero = function({ params, body }, res) {
 };
 
 reset = function(req, res) {
-    Hero.deleteMany({}, (err, info) => {
-        if (err) {
-            return res.send({ error: err });
-        }
-        Hero.insertMany(heroData, (err, info) => {
+    let p1 = new Promise((resolve, reject) => {
+        Hero.deleteMany({}, (err) => {
             if (err) {
+                reject("Error");
                 return res.send({ error: err });
             }
+            resolve("Success");
+        });
+    });
+    let p2 = new Promise((resolve, reject) => {
+        Squad.deleteMany({}, (err) => {
+            if (err) {
+                reject("Error");
+                return res.send({ error: err });
+            }
+            resolve("Success");
+        });
+    });
+    Promise.all([p1, p2]).then(() => {
+        let p1 = new Promise((resolve, reject) => {
+            Hero.insertMany(heroData, (err) => {
+                if (err) {
+                    reject("Error");
+                    return res.send({ error: err });
+                }
+                console.log('HElllooo')
+                resolve("Success");
+            });
+        });
+        let p2 = new Promise((resolve, reject) => {
+            Squad.insertMany(squadData, (err) => {
+                if (err) {
+                    reject("Error");
+                    return res.send({ error: err });
+                }
+                console.log('HElllooo')
+                resolve("Success");
+            });
+        });
+        Promise.all([p1, p2]).then(() => {
             res.redirect("/heroes");
         });
     });
@@ -213,10 +246,10 @@ deleteSquad = function({ params }, res) {
                     let promise = new Promise((resolve, reject) => {
                         hero.save((err) => {
                             if (err) {
-                                reject('Error')
+                                reject("Error");
                                 return res.send({ error: err });
                             }
-                            console.log('Sucesfully deleted')
+                            console.log("Sucesfully deleted");
                             resolve("Success");
                         });
                     });
@@ -224,7 +257,7 @@ deleteSquad = function({ params }, res) {
                 }
             }
             Promise.all(promises).then(() => {
-                console.log('Run this last')
+                console.log("Run this last");
                 res.redirect("/squads");
             });
         });
