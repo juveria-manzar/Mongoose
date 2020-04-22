@@ -142,25 +142,28 @@ getSquadsIndex = function(req, res) {
             return res.send({ error: err });
         }
 
-        Hero.find((err, heroes) => {
-            if (err) {
-                return res.send({ error: err });
-            }
-            for (let i = 0; i < squads.length; i++) {
-                squads[i].heroes = [];
-                console.log(heroes[0].squad);
-                for (let j = 0; j < heroes.length; j++) {
-                    if (heroes[j].squad === squads[i].name) {
-                        console.log("helloooooo");
-                        squads[i].heroes.push(heroes[j]);
-                        heroes.splice(j, 1);
-                        j--;
-                    }
+        Hero.find({ squad: { $exists: true } },
+            "name stats squad", { lean: true },
+            (err, heroes) => {
+                if (err) {
+                    return res.send({ error: err });
                 }
-                console.log(squads[i]);
+                for (let i = 0; i < squads.length; i++) {
+                    squads[i].heroes = [];
+                    console.log(heroes[0].squad);
+                    for (let j = 0; j < heroes.length; j++) {
+                        if (heroes[j].squad === squads[i].name) {
+                            heroes[j].overall = getOverall(heroes[j]);
+                            squads[i].heroes.push(heroes[j]);
+                            heroes.splice(j, 1);
+                            j--;
+                        }
+                    }
+                    console.log(squads[i]);
+                }
+                res.render("squads", { title: "Super Squads", squads: squads });
             }
-            res.render("squads", { title: "Super Squads", squads: squads });
-        });
+        );
     });
 };
 
